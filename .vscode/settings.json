@@ -10,7 +10,16 @@
     "**/.factorypath": true,
     "**/.project": true,
     "**/.settings": true,
-    "**/React-JS.code-workspace": true
+    "**/React-JS.code-workspace": true,
+    "bin": true,
+    "node_modules": true,
+    "LICENSE": true,
+    ".gitignore": true
   },
-  "hide-files.files": []
+  "hide-files.files": [
+    "bin",
+    "node_modules",
+    "LICENSE",
+    ".gitignore"
+  ]
 }
