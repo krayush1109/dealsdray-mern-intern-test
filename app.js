@@ -14,6 +14,8 @@ var db = require('./models/db_connection');
 // console.log(db);
 db.connectDB();
 
+var User_Collection = require('./models/user.schema');
+
 var app = express();
 
 // view engine setup
