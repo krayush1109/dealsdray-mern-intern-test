@@ -36,6 +36,27 @@ app.use(function (req, res, next) {
   next(createError(404));
 });
 
+
+// ------------- passport & session config -------------
+const session = require('express-session');
+const passport = require('passport');
+
+// Configure session middleware
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET, // Session secret from environment variables
+    resave: false, // Do not save session if unmodified
+    saveUninitialized: true // Save uninitialized sessions
+  })
+);
+
+// Initialize passport and session
+app.use(passport.initialize());
+app.use(passport.session());
+passport.serializeUser(User_Collection.serializeUser()); // Serialize user instance
+passport.deserializeUser(User_Collection.deserializeUser()); // Deserialize user instance
+// ------------- passport & session config -------------
+
 // error handler
 app.use(function (err, req, res, next) {
   // set locals, only providing error in development

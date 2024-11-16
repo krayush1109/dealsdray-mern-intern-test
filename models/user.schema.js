@@ -11,16 +11,19 @@ const user_schema = mongoose.Schema({
         require: true,
         unique: true
     },
-    f_userName: {
+    f_full_name: {
         type: String,
-        required: true,
+        require: true,
+    },
+    username: {
+        type: String,
         unique: true
     },
 
     // store hash password only
     f_pwd : {
         type: String,
-        required: true,
+        // required: true,
     }
 
 }, { timestamps: true } // Automatically adds createdAt and updatedAt timestamps
