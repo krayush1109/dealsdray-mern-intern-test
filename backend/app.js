@@ -42,7 +42,7 @@ app.use(session({
   secret: process.env.SESSION_SECRET || 'your-secret-key', // Replace with your secret
   resave: false,
   saveUninitialized: false,
-  cookie: { secure: false } // Set to true if using HTTPS
+  cookie: { secure: false, httpOnly: true } // Set to true if using HTTPS
 }));
 
 // Initialize connect-flash
@@ -62,6 +62,13 @@ app.use('/user', userRouter);
 app.use(function (req, res, next) {
   next(createError(404));
 });
+
+const cors = require('cors');
+app.use(cors({
+  origin: 'http://localhost:5173', // Replace with your frontend's URL
+  credentials: true // Allow cookies and credentials
+}));
+
 
 // error handler
 app.use(function (err, req, res, next) {

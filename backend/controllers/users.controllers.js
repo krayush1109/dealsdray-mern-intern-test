@@ -3,7 +3,7 @@ const { nanoid } = require('nanoid');
 
 exports.handleCreateEmployee = async (req, res, next) => {
     const { name, email, mobileNo, designation, gender, course, imgUpload } = req.body;
-
+    console.log(req.body)
     // Email Validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {

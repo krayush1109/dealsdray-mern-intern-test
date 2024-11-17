@@ -8,15 +8,52 @@ const { isLoggedIn } = require('../middleware/isLoggedIn');
 
 const getNextSerialNumber = require('../utils/getNextSerialNumber');
 
-// Route to handle login with Passport.js authentication
-router.post('/login', passport.authenticate('local', {
-    successRedirect: '/user/', // Redirect on successful login
-    failureRedirect: '/auth/login',    // Redirect on failed login
-    failureFlash: true            // Enable flash messages for failures
-}));
+router.post('/login', (req, res, next) => {
+    passport.authenticate('local', (err, user, info) => {
+        if (err) {
+            console.error('Login Error:', err);
+            return res.status(500).json({ message: 'Internal server error' });
+        }
+
+        if (!user) {
+            console.log('Authentication failed:', info.message);
+            return res.status(401).json({ message: info.message || 'Authentication failed' });
+        }
+
+        req.logIn(user, (err) => {
+            if (err) {
+                console.error('Error logging in user:', err);
+                return res.status(500).json({ message: 'Login error' });
+            }
+
+            // Successful login
+            return res.status(200).json({
+                message: 'Login successful',
+                user: {
+                    id: user.id,
+                    name: user.name,
+                    email: user.email,
+                },
+            });
+        });
+    })(req, res, next);
+});
+
+router.get('/status', (req, res) => {
+    console.log('Session:', req.session);
+    console.log('User  ---:', req.user);
+
+
+    if (req.isAuthenticated()) {
+        res.status(200).json({ isLoggedIn: true, user: req.user });
+    } else {
+        res.status(401).json({ isLoggedIn: false, message: 'Not authenticated' });
+    }
+});
+
 
 // Route to handle user logout
-router.get('/logout', (req, res) => {
+router.post('/logout', (req, res, next) => {  // Change to POST
     if (!req.isAuthenticated()) {
         // If the user is not authenticated, respond with an error message
         return res.status(400).send('You are not logged in');
@@ -27,15 +64,9 @@ router.get('/logout', (req, res) => {
         if (err) {
             return next(err);
         }
-        // res.redirect('/auth/login')
-        res.send('Logout Successfully');
-
+        res.send('Logout Successfully'); // Send success message
     });
 });
-
-router.get('/demo', (req, res, next) => {
-    res.send("Demo");
-})
 
 router.post('/register', async (req, res, next) => {    
     try {

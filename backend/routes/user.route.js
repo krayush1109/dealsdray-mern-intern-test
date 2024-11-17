@@ -29,5 +29,7 @@ router.post('/create', handleCreateEmployee);
 router.post('/update/:e_id', handleUpdateEmployee);
 
 router.post('/delete/:e_id', handleDeleteEmployee);
-
+router.post('/demo', (req, res, next) => {
+  res.status(200).json({ message: "Demo Test Passed" });
+})
 module.exports = router;
