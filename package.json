@@ -2,6 +2,7 @@
   "name": "dealsdray-mern-intern-test",
   "version": "0.0.0",
   "private": true,
+  "type": "commonjs",
   "scripts": {
     "start": "nodemon ./bin/www"
   },
@@ -19,6 +20,7 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.8.1",
     "morgan": "~1.9.1",
+    "nanoid": "^3.3.7",
     "nodemon": "^3.1.7",
     "passport": "^0.7.0",
     "passport-local-mongoose": "^8.0.0"
