@@ -37,12 +37,18 @@ router.get('/demo', (req, res, next) => {
     res.send("Demo");
 })
 
-router.post('/register', async (req, res, next) => {
-    console.log(req.body);
+router.post('/register', async (req, res, next) => {    
     try {
         const { username, email, password } = req.body;
         const encryptedDetail = password;
 
+        // Check if the email already exists
+        const existingUser = await User.findOne({ email });
+        if (existingUser) {
+            return res.status(400).json({ error: 'Email already exists' }); // Send 400 error for duplicate email
+        }
+
+        // new user registration
         const new_user = {
             f_sno: await getNextSerialNumber(),
             username,
@@ -50,7 +56,7 @@ router.post('/register', async (req, res, next) => {
         }
 
         await User.register(new User(new_user), encryptedDetail);
-        res.send("Registered Success")
+        res.status(200).json({ message: 'Registration successful' });
         // res.redirect("/login");
     } catch (err) {
         console.error("Error: ", err);
