@@ -5,7 +5,7 @@ const flash = require('connect-flash'); // Import connect-flash
 
 const passport = require('../config/passport-config');
 const { isLoggedIn } = require('../middleware/isLoggedIn');
-const { handleCreateEmployee } = require('../controllers/users.controllers');
+const { handleCreateEmployee, handleUpdateEmployee } = require('../controllers/users.controllers');
 
 /* Demo Testing */
 router.get('/', isLoggedIn, function (req, res, next) {
@@ -24,7 +24,8 @@ router.get('/create', isLoggedIn, (req, res, next) => {
   res.send("Create Employee Page");
 })
 
-router.post('/create',  handleCreateEmployee)
+router.post('/create', handleCreateEmployee);
 
+router.post('/update/:e_id', handleUpdateEmployee);
 
 module.exports = router;

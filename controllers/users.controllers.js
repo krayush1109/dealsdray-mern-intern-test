@@ -1,5 +1,4 @@
 const Employee_Collection = require("../models/employee.schema");
-const Employee = require("../models/employee.schema");
 const { nanoid } = require('nanoid');
 
 exports.handleCreateEmployee = async (req, res, next) => {
@@ -32,7 +31,7 @@ exports.handleCreateEmployee = async (req, res, next) => {
 
     const new_id = nanoid();  // Generate a unique ID
     console.log(new_id);       // Log the generated ID
-    
+
     const new_employee = {
         e_id: new_id, name, email, mobileNo, designation, gender, course, imgUpload
     }
@@ -44,4 +43,24 @@ exports.handleCreateEmployee = async (req, res, next) => {
 
     res.send(new_employee);
     // res.send("Employee Created Successfully");
+}
+
+exports.handleUpdateEmployee = async (req, res, next) => {
+    const { e_id } = req.params;
+    console.log(e_id);
+
+    const updatedEmployeeDetails = req.body;
+
+    try {
+        // await Employee_Collection.findByIdAndDelete(e_id, )
+        // const emp = await Employee_Collection.find({});
+        // const emp = await Employee_Collection.find({e_id: e_id});
+        const emp = await Employee_Collection.findOneAndUpdate({e_id: e_id}, updatedEmployeeDetails);        
+        console.log(emp);
+
+        res.send(emp);
+    } catch (err) {
+        console.log(err)
+        res.send(err)
+    }
 }
