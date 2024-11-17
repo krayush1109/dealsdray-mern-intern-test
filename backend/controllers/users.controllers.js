@@ -45,6 +45,14 @@ exports.handleCreateEmployee = async (req, res, next) => {
     // res.send("Employee Created Successfully");
 }
 
+exports.handleGetAllEmployee = async (req, res, next) => {
+    const employees = await Employee_Collection.find({});
+    console.log(employees)
+
+    res.status(200).send(employees);
+    // res.status(200).json("Demo Fetch All Completed");
+}
+
 exports.handleUpdateEmployee = async (req, res, next) => {
     const { e_id } = req.params;
     console.log(e_id);
