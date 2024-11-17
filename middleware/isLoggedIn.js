@@ -5,6 +5,7 @@ exports.isLoggedIn = (req, res, next) => {
         return next();
     } else {
         // If the user is not authenticated, redirect to the login page
-        res.redirect("/users/login");
+        res.send("Login first to access this url")
+        // res.redirect("/auth/login");
     }
 };

@@ -7,14 +7,20 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 var indexRouter = require('./routes/index.route');
-var usersRouter = require('./routes/users.route');
-
-// database connection
-var db = require('./models/db_connection');
-// console.log(db);
-db.connectDB();
+var userRouter = require('./routes/user.route');
 
 var User_Collection = require('./models/user.schema');
+
+// 🔷🔷🔷🔷🔷🔷🔷 Authentication Setup 🔷🔷🔷🔷🔷🔷🔷
+const session = require('express-session');
+const flash = require('connect-flash'); // Import connect-flash
+const passport = require('./config/passport-config'); // Passport.js configuration
+const authRouter = require('./routes/auth.route'); // Routes related to authentication
+
+// Establish MongoDB connection and load user schema
+require('./config/db-connection').connectDB();
+require('./models/user.schema');
+// 🔷🔷🔷🔷🔷🔷🔷 Authentication Setup End 🔷🔷🔷🔷🔷🔷🔷
 
 var app = express();
 
@@ -28,34 +34,34 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+
+
+// 🔶🔶🔶🔶🔶🔶🔶  Session and Passport Setup 🔶🔶🔶🔶🔶🔶🔶
+// Initialize session middleware for persistent login sessions
+app.use(session({
+  secret: process.env.SESSION_SECRET || 'your-secret-key', // Replace with your secret
+  resave: false,
+  saveUninitialized: false,
+  cookie: { secure: false } // Set to true if using HTTPS
+}));
+
+// Initialize connect-flash
+app.use(flash());
+
+// Initialize Passport.js and restore authentication state from session
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Use authentication routes
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/auth', authRouter);
+app.use('/user', userRouter);
+// 🔶🔶🔶🔶🔶🔶🔶 Session and Passport Setup End 🔶🔶🔶🔶🔶🔶🔶
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
 });
-
-
-// ------------- passport & session config -------------
-const session = require('express-session');
-const passport = require('passport');
-
-// Configure session middleware
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET, // Session secret from environment variables
-    resave: false, // Do not save session if unmodified
-    saveUninitialized: true // Save uninitialized sessions
-  })
-);
-
-// Initialize passport and session
-app.use(passport.initialize());
-app.use(passport.session());
-passport.serializeUser(User_Collection.serializeUser()); // Serialize user instance
-passport.deserializeUser(User_Collection.deserializeUser()); // Deserialize user instance
-// ------------- passport & session config -------------
 
 // error handler
 app.use(function (err, req, res, next) {

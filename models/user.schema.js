@@ -1,42 +1,32 @@
-// Import the mongoose library
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 
-// Import passport-local-mongoose plugin
-const plm = require('passport-local-mongoose');
+const plm = require('passport-local-mongoose')
 
-// Define a new schema for the user collection
 const user_schema = mongoose.Schema({
     f_sno: {
         type: Number,
-        require: true,
+        required: true,
         unique: true
     },
-    f_full_name: {
+    email: {
         type: String,
-        require: true,
+        required: true,
+        unique: true
     },
     username: {
         type: String,
-        unique: true
+        required: true
     },
-
-    // store hash password only
-    f_pwd : {
-        type: String,
-        // required: true,
-    }
-
-}, { timestamps: true } // Automatically adds createdAt and updatedAt timestamps
+    password: String,
+ 
+}, { timestamps: true }
 );
 
-// Apply the passport-local-mongoose plugin to the schema
-user_schema.plugin(plm);
+// user_schema.plugin(plm);
+user_schema.plugin(plm, { usernameField: 'email' });
 
-// Create a model named "users" using the user schema
-const User_Collection = mongoose.model("users", user_schema);
+const User_Collection = mongoose.model("user", user_schema)
 
-// Log a message indicating the schema has been created
 console.log("Schema Created");
 
-// Export the user collection model
 module.exports = User_Collection;
