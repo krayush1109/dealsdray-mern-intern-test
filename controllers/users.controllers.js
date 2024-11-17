@@ -11,7 +11,7 @@ exports.handleCreateEmployee = async (req, res, next) => {
     }
 
     // Duplicate email check
-    const existingEmployee = await Employee.findOne({ email });
+    const existingEmployee = await Employee_Collection.findOne({ email });
     if (existingEmployee) {
         return res.status(400).send('Email already exists.');
     }
@@ -55,12 +55,27 @@ exports.handleUpdateEmployee = async (req, res, next) => {
         // await Employee_Collection.findByIdAndDelete(e_id, )
         // const emp = await Employee_Collection.find({});
         // const emp = await Employee_Collection.find({e_id: e_id});
-        const emp = await Employee_Collection.findOneAndUpdate({e_id: e_id}, updatedEmployeeDetails);        
+        const emp = await Employee_Collection.findOneAndUpdate({ e_id: e_id }, updatedEmployeeDetails);
         console.log(emp);
 
         res.send(emp);
     } catch (err) {
         console.log(err)
         res.send(err)
+    }
+}
+
+exports.handleDeleteEmployee = async (req, res, next) => {
+
+    try {
+        const { e_id } = req.params;
+        console.log(e_id);
+        await Employee_Collection.findOneAndDelete({ e_id: e_id });
+
+        res.send("Employee Deleted");
+
+    } catch (err) {
+        console.log(err);
+        res.send(err);
     }
 }
