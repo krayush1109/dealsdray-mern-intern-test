@@ -15,6 +15,7 @@ const MainRoutes = () => {
 
             <BrowserRouter >
                 <Navbar />
+                
                 <Routes>
                     {/* <Route path='/' element={<h1> Home Page</h1>} ></Route> */}
                     <Route path='/' element={<Home />} ></Route>
