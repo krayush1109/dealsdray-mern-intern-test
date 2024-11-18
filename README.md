@@ -1,22 +1,14 @@
 # dealsdray-mern-intern-test
 MERN MACHINE TEST WITH REFERENCE TO THE APPLICATION.
 
-# Full-Stack Project with Node.js and React.js
+# Employee Management System
 
-This is a full-stack web application that integrates a **Node.js/Express backend** with a **React.js frontend**. The backend handles API requests and interacts with a MongoDB database, while the frontend provides an interactive UI for users to interact with the system.
+This project is a web application for managing employees, including creating, reading, updating, and deleting employee records. The application also supports user authentication, including login, registration, and protected routes for secure operations.
 
-## Table of Contents
-- [Project Overview](#project-overview)
-- [Tech Stack](#tech-stack)
-- [Installation Instructions](#installation-instructions)
-- [Folder Structure](#folder-structure)
-- [Backend Setup](#backend-setup)
-- [Frontend Setup](#frontend-setup)
-- [Running the Project](#running-the-project)
-- [Scripts](#scripts)
-- [API Documentation](#api-documentation)
-- [Contributing](#contributing)
-- [License](#license)
+## **Features**
+- User authentication using Passport.js (Local Strategy).
+- CRUD operations for managing employees.
+- Protected routes to ensure authorized access.
 
 ## Project Overview
 
@@ -27,14 +19,14 @@ This project demonstrates a full-stack application with the following core compo
   
 The system includes user registration, login, and simple data interaction.
 
-## Tech Stack
+## **Technologies Used**
 
-- **Backend**: Node.js, Express.js
-- **Frontend**: React.js
+- **Backend**: Node.js, Express.js, Passport.js
+- **Frontend**: React.js, TailwindCSS
+- **Authentication**: Passport.js
+- **Validation**: Mongoose, Regex
+- **Frontend**: React.js, tailwindcss
 - **Database**: MongoDB (with Mongoose)
-- **Authentication**: Passport JS
-- **API Requests**: Axios (for frontend to backend communication)
-- **Development Tools**: Nodemon (for backend), Concurrently (to run both backend and frontend simultaneously)
 - **Environment Management**: dotenv (for environment variables)
 
 ## Installation Instructions
@@ -46,3 +38,41 @@ Start by cloning the project to your local machine:
 ```bash
 git clone https://github.com/krayush1109/dealsdray-mern-intern-test
 cd dealsdray-mern-intern-test
+
+```
+## Set up environment variables in .env:
+
+```css
+SESSION_SECRET = random_kdf$@*djfk
+MONGO_URI=<your-mongodb-connection-string>
+```
+
+# Backend Authentication Routes
+
+| Route        | Method | Description                                  | Protected |
+|--------------|--------|----------------------------------------------|-----------|
+| `/login`     | POST   | Log in an existing user.                     | No        |
+| `/logout`    | POST   | Log out the current user.                    | Yes       |
+| `/register`  | POST   | Register a new user.                         | No        |
+| `/check_login` | GET   | Check login status of the current user.      | Yes       |
+
+
+# Frontend Overview
+
+## MainRoutes Component
+
+The `MainRoutes` component manages the application's routing. It defines both **public** and **protected** routes using `react-router-dom`.
+
+### Route Definitions
+
+| Route                | Component         | Description                                        | Protected |
+|----------------------|-------------------|----------------------------------------------------|-----------|
+| `/`                  | `Home`            | Displays the home page.                           | No        |
+| `/register`          | `RegisterPage`    | User registration page.                           | No        |
+| `/login`             | `LoginPage`       | User login page.                                   | No        |
+| `/create`            | `CreateEmployee`  | Form to create a new employee.                     | Yes       |
+| `/edit/:e_id`        | `EditEmployee`    | Form to edit an existing employee by ID.           | Yes       |
+| `/dashboard`         | `Dashboard`       | Displays a dashboard with employee records.        | Yes       |
+| `*`                  | Not Found         | Fallback route for undefined pages.               | No        |
+
+

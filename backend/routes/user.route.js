@@ -23,6 +23,7 @@ router.get('/create', isLoggedIn, (req, res, next) => {
 
 router.post('/create', upload.single('poster'), handleCreateEmployee);
 
+
 // READ - employee list
 router.get('/getAllEmployee', isLoggedIn, handleGetAllEmployee)
 

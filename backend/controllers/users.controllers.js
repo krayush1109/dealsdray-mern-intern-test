@@ -33,7 +33,7 @@ exports.handleCreateEmployee = async (req, res, next) => {
     console.log(new_id);       // Log the generated ID
 
     const new_employee = {
-        e_id: new_id, name, email, mobileNo, designation, gender, course, imgUpload
+        e_id: new_id, name, email, mobileNo, designation, gender, course, imgUpload: imageUrl
     }
 
     console.log(new_employee);
