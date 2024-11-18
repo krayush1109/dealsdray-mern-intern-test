@@ -112,34 +112,50 @@ const EditEmployee = () => {
                         required
                     />
                 </div>
-
                 <div>
                     <label className="block text-sm font-medium text-gray-700">Designation</label>
-                    <input
-                        type="text"
+                    <select
                         name="designation"
                         value={employee.designation}
                         onChange={handleChange}
                         className="w-full p-2 border border-gray-300 rounded-lg"
                         required
-                    />
+                    >
+                        <option value="HR">HR</option>
+                        <option value="Manager">Manager</option>
+                        <option value="Sales">Sales</option>
+                    </select>
                 </div>
+
 
                 <div>
                     <label className="block text-sm font-medium text-gray-700">Gender</label>
-                    <select
-                        name="gender"
-                        value={employee.gender}
-                        onChange={handleChange}
-                        className="w-full p-2 border border-gray-300 rounded-lg"
-                        required
-                    >
-                        <option value="">Select Gender</option>
-                        <option value="Male">Male</option>
-                        <option value="Female">Female</option>
-                        <option value="Other">Other</option>
-                    </select>
+                    <div className="flex items-center space-x-4">
+                        <label>
+                            <input
+                                type="radio"
+                                name="gender"
+                                value="M"
+                                checked={employee.gender === "M"}
+                                onChange={handleChange}
+                                className="mr-2"
+                            />
+                            Male
+                        </label>
+                        <label>
+                            <input
+                                type="radio"
+                                name="gender"
+                                value="F"
+                                checked={employee.gender === "F"}
+                                onChange={handleChange}
+                                className="mr-2"
+                            />
+                            Female
+                        </label>
+                    </div>
                 </div>
+
 
                 <div>
                     <label className="block text-sm font-medium text-gray-700">Courses</label>

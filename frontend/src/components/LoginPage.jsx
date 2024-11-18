@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import axios from '../utils/axios';
 import { useNavigate } from 'react-router';
-import useAuthStatus from '../utils/useAuthStatus';
+import { useAuth } from '../context/AuthContext';
 
 const LoginPage = () => {
-    const { fetchLoginStatus } = useAuthStatus(); // We don't need isLoggedIn here, just the fetchLoginStatus
+    const { setIsAuthenticated, setUser } = useAuth();
     const navigate = useNavigate();
 
     const [email, setEmail] = useState('');
@@ -19,10 +19,11 @@ const LoginPage = () => {
 
         try {
             const response = await axios.post('/auth/login', { email, password });
-
+            console.log(response)
             if (response.status === 200) {
                 // Successful login, update login status and navigate
-                fetchLoginStatus();
+                setIsAuthenticated(true);
+                setUser(response.data.user)
                 navigate('/dashboard'); // Redirect to the dashboard or desired page
             }
         } catch (err) {

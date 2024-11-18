@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import axios from '../utils/axios';
+import { useNavigate } from 'react-router';
 
 const CreateEmployee = () => {
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -47,15 +49,6 @@ const CreateEmployee = () => {
         console.log('Submitted Data:', formData);
 
         try {
-            // Example: FormData for API submission
-            // const submissionData = new FormData();
-            // submissionData.append('name', formData.name);
-            // submissionData.append('email', formData.email);
-            // submissionData.append('mobileNo', formData.mobile);
-            // submissionData.append('designation', formData.designation);
-            // submissionData.append('gender', formData.gender);
-            // submissionData.append('course', formData.courses.join(','));
-
             const submissionData = {
                 name: formData.name,
                 email: formData.email,
@@ -87,11 +80,12 @@ const CreateEmployee = () => {
                     name: '',
                     email: '',
                     mobile: '',
-                    designation: 'HR',
+                    designation: '',
                     gender: '',
                     courses: [],
                     img: null,
                 });
+                navigate('/dashboard');
             }
         } catch (err) {
             if (err.response) {
@@ -110,7 +104,7 @@ const CreateEmployee = () => {
         <div className="min-h-screen bg-gray-100 flex items-center justify-center">
             <div className="w-full max-w-lg bg-white p-8 rounded-lg shadow-md">
                 <h2 className="text-2xl font-semibold text-center mb-6">Create Employee</h2>
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit} encType="multipart/form-data" method="post">
                     {/* Name */}
                     <div className="mb-4">
                         <label htmlFor="name" className="block text-gray-700">

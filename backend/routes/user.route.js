@@ -2,6 +2,7 @@ var express = require('express');
 const User_Collection = require('../models/user.schema');
 var router = express.Router();
 const flash = require('connect-flash'); // Import connect-flash
+const upload = require('../utils/multer');
 
 const passport = require('../config/passport-config');
 const { isLoggedIn } = require('../middleware/isLoggedIn');
@@ -14,22 +15,18 @@ router.get('/', isLoggedIn, function (req, res, next) {
   res.send('Welcome to the Dashboard ! ');
 });
 
-// employee list
-router.get('/list', isLoggedIn, (req, res, next) => {
-
-  res.send("Employee List");
-})
-
+// CREATE -------------
 router.get('/create', isLoggedIn, (req, res, next) => {
-
+  
   res.send("Create Employee Page");
 })
 
-router.get('/getAllEmployee', handleGetAllEmployee)
+router.post('/create', upload.single('poster'), handleCreateEmployee);
 
-router.post('/create', handleCreateEmployee);
+// READ - employee list
+router.get('/getAllEmployee', isLoggedIn, handleGetAllEmployee)
 
-router.get('/update/:e_id', async (req, res, next) => {
+router.get('/update/:e_id', isLoggedIn, async (req, res, next) => {
   try {
     const { e_id } = req.params;
 
@@ -47,11 +44,10 @@ router.get('/update/:e_id', async (req, res, next) => {
   }
 });
 
+// UPDATE -------------
+router.post('/update/:e_id', isLoggedIn, handleUpdateEmployee);
 
-router.post('/update/:e_id', handleUpdateEmployee);
+// DELETE ------------------
+router.get('/delete/:e_id', isLoggedIn, handleDeleteEmployee);
 
-router.get('/delete/:e_id', handleDeleteEmployee);
-router.post('/demo', (req, res, next) => {
-  res.status(200).json({ message: "Demo Test Passed" });
-})
 module.exports = router;

@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-
+import { useAuth } from '../context/AuthContext'
 const Home = () => {
+    const { isAuthenticated, user } = useAuth();
     return (
         <div className="min-h-screen bg-gray-100 flex flex-col justify-center items-center p-4">
             {/* Heading */}
@@ -24,7 +25,7 @@ const Home = () => {
             </p>
 
             {/* Buttons for Login and Register */}
-            <div className="flex space-x-4">
+            {!isAuthenticated && <div className="flex space-x-4">
                 <Link
                     to="/login"
                     className="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
@@ -38,7 +39,23 @@ const Home = () => {
                 >
                     Register
                 </Link>
+
             </div>
+            }
+
+            {isAuthenticated &&
+                <div>
+
+                    <Link
+                        to="/dashboard"
+                        className="px-6 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600"
+                    >
+                        You are currently logged in as : <b>{user.username}</b>
+                    </Link>
+                    <p className='py-3 text-center font-bold text-slate-700'>Go to Dashboard</p>
+                </div>
+            }
+
         </div>
     );
 };

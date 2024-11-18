@@ -1,18 +1,18 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router';
-import useAuthStatus from '../utils/useAuthStatus'; // Import the custom hook
 import axios from '../utils/axios';
+import { useAuth } from '../context/AuthContext';
+
 
 const Navbar = () => {
-    const { isLoggedIn, userName, loading, fetchLoginStatus } = useAuthStatus(); // Use the custom hook
     const navigate = useNavigate();
-
+    const { loading, isAuthenticated, setIsAuthenticated, user } = useAuth();
     // Handle logout
     const handleLogout = async () => {
         try {
             await axios.post('/auth/logout', {}, { withCredentials: true });
-            fetchLoginStatus();
+            setIsAuthenticated(false);
             navigate('/'); // Redirect to homepage or login page after logout
         } catch (err) {
             console.error('Error during logout:', err);
@@ -33,10 +33,16 @@ const Navbar = () => {
 
                 {/* Navbar Links */}
                 <div className="space-x-4">
-                    {isLoggedIn ? (
+                    {isAuthenticated ? (
                         // Logged-in view: Show Logout button and user name
                         <>
-                            <span className="text-white">Hello, {userName}</span>
+                            <span className="text-white">Hello, {user.username}</span>
+                            <button
+                                onClick={()=> navigate('/dashboard')}
+                                className="bg-blue-500 text-white px-4 py-2 rounded-lg"
+                            >
+                                Dashboard
+                            </button>
                             <button
                                 onClick={handleLogout}
                                 className="bg-red-500 text-white px-4 py-2 rounded-lg"

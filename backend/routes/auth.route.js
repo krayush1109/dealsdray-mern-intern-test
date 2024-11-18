@@ -31,7 +31,7 @@ router.post('/login', (req, res, next) => {
                 message: 'Login successful',
                 user: {
                     id: user.id,
-                    name: user.name,
+                    name: user.username,
                     email: user.email,
                 },
             });
@@ -39,18 +39,14 @@ router.post('/login', (req, res, next) => {
     })(req, res, next);
 });
 
-router.get('/status', (req, res) => {
-    console.log('Session:', req.session);
-    console.log('User  ---:', req.user);
-
-
-    if (req.isAuthenticated()) {
-        res.status(200).json({ isLoggedIn: true, user: req.user });
-    } else {
-        res.status(401).json({ isLoggedIn: false, message: 'Not authenticated' });
+// Check login status
+router.get('/check_login', isLoggedIn, (req, res) => {
+    console.log(req.user)
+    if (req.user) {
+        return res.status(200).json({ isAuthenticated: true, user: req.user });
     }
+    return res.status(401).json({ isAuthenticated: false, user: null });
 });
-
 
 // Route to handle user logout
 router.post('/logout', (req, res, next) => {  // Change to POST
